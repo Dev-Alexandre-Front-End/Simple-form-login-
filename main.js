@@ -10,8 +10,7 @@ const er_check = document.querySelector("#chec-u");
 const btn = document.querySelector("#usr-submit");
 const form = document.querySelector("form");
 
-const emailRegex = /^\S+@\S+\.\S+$/;
-const passwRegex = /\s/;
+const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
 function iconBTN() {
   if (usr_pass.type === "password") {
@@ -24,13 +23,13 @@ function iconBTN() {
     icon.classList.remove("fa-eye-slash");
   }
 }
-
 btn.addEventListener('click', (event) => {
   event.preventDefault();
   
-  const pass = usr_pass.value;
+  const pass = usr_pass.value.trim();
   const gmail = usr_gmail.value.trim();
   const check = usr_check.checked;
+  
   
   er_email.classList.remove("ema");
   er_password.classList.remove("pas");
@@ -38,38 +37,42 @@ btn.addEventListener('click', (event) => {
   
   usr_gmail.classList.remove("error");
   usr_pass.classList.remove("error");
-
-  if (!emailRegex.test(gmail) || !gmail.endsWith("@gmail.com")) {
+  
+   if (!emailRegex.test(gmail)) {
     er_email.classList.add("ema");
     usr_gmail.classList.add("error");
     return;
   }
-  
-  if (passwRegex.test(pass) || pass.length < 6) {
+
+  if ((pass.length < 6) || (pass.startsWith(" ") ||
+   pass.endsWith(" ") ||
+  pass.includes(" ")) {
     er_password.classList.add("pas");
     usr_pass.classList.add("error");
     return;
   }
-
+  
   if (!check) {
     er_check.classList.add("che");
     return;
   }
   
+  
   btn.classList.add("sub");
   btn.innerHTML = "";
-
+  
   setTimeout(() => {
     btn.classList.remove("sub");
     btn.innerHTML = "ENVIADO";
     btn.disabled = true;
-
+    
     form.reset();
-
+    
+    
     er_email.classList.remove("ema");
     er_password.classList.remove("pas");
     er_check.classList.remove("che");
-
+    
     usr_gmail.classList.remove("error");
     usr_pass.classList.remove("error");
   }, 5000);
